@@ -30,7 +30,7 @@ struct Node {
 	Node* left;
 	Node* right;
 };
-Node* buildTree() {
+Node* buildTree() { 
 	int d;
     cin>>d;
     queue<Node *>q;
