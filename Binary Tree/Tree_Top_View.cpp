@@ -1,4 +1,4 @@
-/* Given a binary tree , print the nodes in left to right manner as visible from below the tree
+/* Given a binary tree , print the nodes in left to right manner as visible from above the tree
 
 Input Format
 Level order input for the binary tree will be given.
@@ -7,12 +7,12 @@ Constraints
 No of nodes in the tree can be less than or equal to 10^7
 
 Output Format
-A single line containing space separated integers representing the bottom view of the tree
+A single line containing space separated integers representing the top view of the tree
 
 Sample Input
 1 2 3 4 5 6  -1 -1 -1 -1 -1 -1 -1
 Sample Output
-4 2 6 3
+4 2 1 3
 Explanation
 The tree looks like
 
@@ -21,8 +21,7 @@ The tree looks like
        2           3
     /     \       /
    4       5     6
-(Note that 5 and 6 are at the same position so we consider the right one to lower)
-
+When viewed from the top , we would see the nodes 4, 2, 1 and 3.
 */
 #include<bits/stdc++.h>
 using namespace std;
@@ -60,7 +59,7 @@ Node* buildTree() {
     }
     return root;
 }
-void BottomView(Node* root) {
+void LeftView(Node* root) {
     if(root == NULL) {
         return;
     }
@@ -71,22 +70,23 @@ void BottomView(Node* root) {
     root->hd = hd;
     q.push(root);
 
-    while(!q.empty()) {
-        Node* temp = q.front();
-        q.pop();
-        hd = temp->hd;
-        m[hd] = temp->data;
-        if (temp->left != NULL) 
+    while(q.size()) {
+        
+        hd = root->hd;
+        if(m.count(hd) == 0)
+        m[hd] = root->data;
+        if (root->left != NULL) 
         { 
-            temp->left->hd = hd-1; 
-            q.push(temp->left); 
+            root->left->hd = hd-1; 
+            q.push(root->left); 
         } 
-        if (temp->right != NULL) 
+        if (root->right != NULL) 
         { 
-            temp->right->hd = hd+1; 
-            q.push(temp->right); 
+            root->right->hd = hd+1; 
+            q.push(root->right); 
         } 
-
+q.pop();
+root = q.front();
 
     }
     for(auto i = m.begin(); i != m.end() ; ++i)
@@ -95,7 +95,7 @@ void BottomView(Node* root) {
 
 int main() {
     Node* root = buildTree();
-    BottomView(root);
+    LeftView(root);
 
     return 0;
 }
